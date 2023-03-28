@@ -1,0 +1,97 @@
+﻿@model Asp_MongoDB.Models.Order
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="breadcumb-area bg-img-1 black-opacity ptb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcumb-wrap text-center">
+                    <h2>Details Order</h2>
+                    <ul>
+                        <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li><span>Details Order</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="cart-area ptb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h5 class="text-danger text-bold"> @Html.DisplayNameFor(model => model.CreatedAt) : @Html.DisplayFor(model => model.CreatedAt)!!</h5>
+                <article class="card">
+                    <div class="card-body">
+                        <article class="card">
+
+                            <div class="card-body row">
+
+                                <div class="col">
+                                    <strong>
+                                        @Html.DisplayNameFor(model => model.FullName):
+                                    </strong>
+                                    <br>
+                                    @Html.DisplayFor(model => model.FullName)
+                                </div>
+                                <div class="col">
+                                    <strong>
+                                        @Html.DisplayNameFor(model => model.Address):
+                                    </strong>
+                                    <br>
+                                    @Html.DisplayFor(model => model.Address)
+                                </div>
+                                <div class="col">
+                                    <strong>Email:</strong>
+                                    <br> @Html.DisplayFor(model => model.EmailAddress)
+                                    <i class="fa fa-phone"></i> +@Html.DisplayFor(model => model.ContactNumber)
+                                </div>
+
+                                <div class="col">
+                                    <strong>
+                                        @Html.DisplayNameFor(model => model.Price)
+                                    </strong>
+                                    <br>
+                                    @Html.DisplayFor(model => model.Price)
+                                </div>
+                            </div>
+                        </article>
+                        <hr>
+                        <table class="table-responsive cart-wrap">
+                            <thead>
+                                <tr>
+                                    <td class="ptice">Book Name</td>
+                                    <td class="images">
+                                        Image
+                                    </td>
+                                    <td class="ptice">Price</td>
+                                    <td class="ptice">Quantity</td>
+                                    <td class="ptice">Total Price</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in ViewBag.OrderItems)
+                                {
+                                    <tr>
+                                        <td class="ptice">@item.BookName</td>
+                                        <td class="images">
+                                            <img height="90" src="~/images/books/@item.Image" alt=" @item.BookName">
+                                        </td>
+                                        <td class="ptice">@item.Price</td>
+                                        <td class="ptice">@item.Quantity</td>
+                                        <td class="ptice">@(item.Price*item.Quantity)</td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+</div>

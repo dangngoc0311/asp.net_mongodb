@@ -1,0 +1,77 @@
+﻿@model Asp_MongoDB.Models.Book
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="page-header no-gutters">
+    <div class="row d-flex">
+        <div class="header-sub-title col-md-8 pt-3">
+            <nav class="breadcrumb breadcrumb-dash">
+                <a asp-controller="Dashboard" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+                <span class="breadcrumb-item active">@ViewData["Title"]</span>
+            </nav>
+        </div>
+        <div class="col-md-4">
+        </div>
+
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h4>
+            Detail Book
+        </h4>
+        <div class="m-t-25">
+            <div class="row">
+                <div class="col-md-6">
+                    <dl class="dl-horizontal">
+                        <dt >
+                            @Html.DisplayNameFor(model => model.BookId)
+                        </dt>
+                        <dd >
+                            @Html.DisplayFor(model => model.BookId)
+                        </dd>
+                        <dt >
+                            @Html.DisplayNameFor(model => model.BookName)
+                        </dt>
+                        <dd >
+                            @Html.DisplayFor(model => model.BookName)
+                        </dd>
+                        <dt >
+                            @Html.DisplayNameFor(model => model.Author)
+                        </dt>
+                        <dd >
+                            @Html.DisplayFor(model => model.Author)
+                        </dd>
+                        
+                        <dt >
+                            @Html.DisplayNameFor(model => model.Price)
+                        </dt>
+                        <dd>
+                            @string.Format("{0:C0}", Model.Price)
+                        </dd>
+                        <dt >
+                            @Html.DisplayNameFor(model => model.Quantity)
+                        </dt>
+                        <dd >
+                            @Html.DisplayFor(model => model.Quantity)
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <img src="~/images/books/@Model.Image" alt="@Model.BookId" width="250" />
+                </div>
+            </div>
+            <div class="row">
+                @Html.Raw(@Model.Description)
+            </div>
+            <div>
+                <a asp-action="Edit" asp-route-id="@Model.BookId" class="btn btn-warning">Edit</a>
+                <a asp-action="Index" class="btn btn-primary">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>

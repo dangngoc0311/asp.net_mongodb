@@ -1,0 +1,48 @@
+﻿@model Asp_MongoDB.Models.Category
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header row">
+    <div class="header-sub-title col-md-12">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-controller="Home" asp-action="Index" class="breadcrumb-item">
+                <i class="anticon anticon-home m-r-5"></i>Home
+            </a>
+            <a class="breadcrumb-item" asp-controller="Categories" asp-action="Index">Categories</a>
+            <span class="breadcrumb-item active">Edit Category</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h4>
+            Edit Category
+        </h4>
+        <div class="m-t-25">
+            <div class="row">
+                <div class="col-md-6">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input asp-for="CategoryId" class="form-control" type="hidden"/>
+                        <div class="form-group">
+                            <label asp-for="CategoryName" class="control-label"></label>
+                            <input asp-for="CategoryName" class="form-control" />
+                            <span asp-validation-for="CategoryName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Update" class="btn btn-success" />
+                            <a asp-action="Index" class="btn btn-primary">Back to List</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

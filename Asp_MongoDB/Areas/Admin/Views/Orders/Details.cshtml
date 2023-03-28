@@ -1,0 +1,255 @@
+﻿@model Asp_MongoDB.Models.Order
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<main>
+    <!-- breadcrumb area start -->
+    <div class="page-header row">
+        <div class="header-sub-title col-md-12">
+            <nav class="breadcrumb breadcrumb-dash">
+                <a asp-controller="Home" asp-action="Index" class="breadcrumb-item">
+                    <i class="anticon anticon-home m-r-5"></i>Home
+                </a>
+                <a class="breadcrumb-item" asp-controller="Orders" asp-action="Index">Order</a>
+                <span class="breadcrumb-item active">Detail Order</span>
+            </nav>
+        </div>
+    </div>
+    <section class="tp-service-area-three pt-120 pb-90">
+        <div class="container card">
+            <div class="row card-body">
+                <div class="col-12">
+                    <div class="invoice p-3 mb-3">
+                        <div class="row">
+                            <div class="col-12">
+                                <small class="float-right" style="float:right">Date: @Model.CreatedAt?.ToLongDateString()</small>
+                            </div>
+                        </div>
+                        <div class="row invoice-info">
+                            <div class="col-sm-6 invoice-col">
+                                <address>
+                                    <strong class="text-capitalize">@Model.FullName</strong><br> <br>
+                                    <i class="anticon anticon-mail mr-25" style="margin-right:6px"></i> @Model.EmailAddress
+                                    <br><i class="anticon anticon-phone mr-25" style="margin-right:6px"></i>
+                                    @Model.ContactNumber
+                                    <br>
+                                    <i class="anticon anticon-environment mr-25" style="margin-right:6px"></i>@Model.Address
+                                </address>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="row">
+                            <div class="table-content table-responsive">
+                                <table class="table text-center">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Book Name
+                                            </th>
+                                            <th>Image</th>
+                                            <th>
+                                                Price
+                                            </th>
+                                            <th>
+                                                Quantity
+                                            </th>
+                                            <th>
+                                                Total Price
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.OrderItems)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @item.BookName
+                                                </td>
+                                                <td>
+                                                    <img src="~/images/books/@item.Image" alt="@item.BookName" width="80" />
+                                                </td>
+                                                <td>
+                                                    @string.Format("{0:C0}", item.Price)
+                                                </td>
+                                                <td>
+                                                    @item.Quantity
+                                                </td>
+                                                <td>
+                                                    @string.Format("{0:C0}", (item.Quantity * item.Price))
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-7 d-flex">
+                            </div>
+                            <div class="col-5">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <th>Total:</th>
+                                                <td>@string.Format("{0:C0}", Model.Price)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row no-print">
+                            <div class="col-7">
+                            </div>
+                            <div class="col-5 d-flex">
+                                <a asp-action="Index" class="btn btn-primary" style="margin-left: 5px;">Back to List</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+@section Css{
+    <style>
+        body {
+            font-family: "Roboto", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            color: #212529;
+            font-size: 16px;
+        }
+
+
+        .table-content table {
+            border-color: #dee2e6;
+            border-radius: 0;
+            border-style: solid;
+            border-width: 1px;
+            width: 100%;
+        }
+
+            .table-content table td {
+                border-top: medium none;
+                padding: 22px 6px;
+                vertical-align: middle;
+            }
+
+                .table-content table td.product_remove {
+                    font-size: 20px;
+                }
+
+                .table-content table td.product-thumbnail img {
+                    width: auto;
+                    height: 100%;
+                }
+
+                .table-content table td.product-name {
+                    font-size: 17px;
+                    text-transform: capitalize;
+                }
+
+                .table-content table td.product-price {
+                    font-size: 16px;
+                }
+
+                .table-content table td.product-stock-status span.in-stock, .table-content table td.product-stock-status span.out-stock {
+                    font-size: 12px;
+                    text-transform: capitalize;
+                }
+
+                .table-content table td.product-stock-status span.out-stock {
+                    color: #dc3545;
+                }
+
+                .table-content table td.cart_btn a {
+                    font-size: 14px;
+                    text-transform: uppercase;
+                    background: #010101;
+                    color: #fff;
+                    height: 40px;
+                    line-height: 43px;
+                    width: 130px;
+                    display: inline-block;
+                    transition: all 0.3s ease 0s;
+                }
+
+                    .table-content table td.cart_btn a:hover {
+                        background: #bac34e;
+                        color: #fff;
+                    }
+
+
+
+        .table-content .table > :not(:last-child) > :last-child > * {
+            border-bottom-color: #dee2e6;
+        }
+
+        .table-content table th {
+            border-top: medium none;
+            font-size: 16px;
+            text-transform: capitalize;
+            padding: 20px 10px;
+            text-align: center;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+
+
+
+        .itemside {
+            position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            width: 100%
+        }
+
+            .itemside .aside {
+                position: relative;
+                flex-shrink: 0
+            }
+
+        .img-sm {
+            width: 80px;
+            height: 80px;
+            padding: 7px
+        }
+
+        ul.row, ul.row-sm {
+            list-style: none;
+            padding: 0
+        }
+
+        .itemside .info {
+            padding-left: 15px;
+            padding-right: 7px
+        }
+
+        .itemside .title {
+            display: block;
+            margin-bottom: 5px;
+            color: #212529
+        }
+
+
+
+        .invoice-col {
+            border: 1px solid #ddd;
+            padding: 20px;
+        }
+    </style>
+}

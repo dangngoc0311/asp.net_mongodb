@@ -1,0 +1,108 @@
+﻿@model IEnumerable<Asp_MongoDB.Models.Cart>
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="breadcumb-area bg-img-1 black-opacity ptb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcumb-wrap text-center">
+                    <h2>List Cart</h2>
+                    <ul>
+                        <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+
+                        <li><span>List Cart</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="cart-area ptb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form action="cart">
+                    <table class="table-responsive cart-wrap">
+                        <thead>
+                            <tr>
+                                <th class="images">
+                                    @Html.DisplayNameFor(model => model.Image)
+                                </th>
+                                <th class="product">
+                                    @Html.DisplayNameFor(model => model.BookName)
+                                </th>
+                                <th class="ptice">
+                                    @Html.DisplayNameFor(model => model.Price)
+                                </th>
+                                <th class="quantity">
+                                    @Html.DisplayNameFor(model => model.Quantity)
+                                </th>
+                                <th class="total">TotalPrice</th>
+                                <th class="remove"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="images"><img src="~/images/books/@Html.DisplayFor(modelItem => item.Image)" alt=" @Html.DisplayFor(modelItem => item.BookName)"></td>
+                                    <td class="product">
+                                        <a href="single-product.html">
+                                            @Html.DisplayFor(modelItem => item.BookName)
+                                        </a>
+                                    </td>
+                                    <td class="ptice">
+                                        @*@string.Format("{0:C}", item.Price)*@
+                                        @item.Price
+                                    </td>
+                                    <td class="quantity">
+                                        <a asp-controller="Cart" asp-action="DecreaseQtyCart" asp-route-id="@item.BookId" class="btn">
+                                           -
+                                        </a>
+                                        <span style="margin: auto 7px;font-weight: 500;font-size: 19px;">
+                                            @item.Quantity
+                                        </span>
+                                        <a asp-controller="Cart" asp-action="IncreaseQtyCart" asp-route-id="@item.BookId" class="btn">
+                                            +
+                                        </a>
+                                    </td>
+                                    <td class="total">@(item.Quantity*item.Price)</td>
+                                    <td class="remove"><a asp-controller="Cart" asp-action="RemoveItemCart" asp-route-id="@item.BookId"> <i class="fa fa-times"></i></a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="row mt-60">
+                        <div class="col-xl-6 col-lg-5 col-md-6 ">
+                        </div>
+                        <div class="col-xl-3 offset-xl-3 col-lg-4 offset-lg-2 col-md-6">
+                            <div class="cart-total text-right">
+                                <h3>Cart Total</h3>
+                                <ul>
+                                    <li><span class="pull-left"> TotalPrice  </span> @Model.Sum(a => a.Price * a.Quantity)</li>
+                                </ul>
+                                @if (HttpContextAccessor.HttpContext.Session.GetString("ShoppingCart") != null)
+                                {
+                                    <a asp-controller="Orders" asp-action="Create">Proceed to checkout</a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Books" asp-action="Index">Please choose a product</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

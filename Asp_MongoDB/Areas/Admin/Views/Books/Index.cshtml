@@ -1,0 +1,145 @@
+﻿@model IEnumerable<Asp_MongoDB.Models.Book>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="page-header row">
+    <div class="header-sub-title col-md-12">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-controller="Home" asp-action="Index" class="breadcrumb-item">
+                <i class="anticon anticon-home m-r-5"></i>Home
+            </a>
+            <a class="breadcrumb-item" asp-controller="Books" asp-action="Index">
+                Books
+            </a>
+            <span class="breadcrumb-item active">List Books</span>
+        </nav>
+    </div>
+    <div class="col-md-12" style="display: flex;">
+        <form action="" method="get" class="form-inline ml-lg-auto">
+            <div class="form-group">
+                <label class="sr-only" for="">label</label>
+                <input class="form-control" name="name" placeholder="Search" value="@ViewBag.SearchTerm">
+            </div>
+            <button type="submit" class="btn btn-icon btn-default mr-1"><i class="anticon anticon-search"></i></button>
+        </form>
+        <a asp-action="Create">
+            <i class="anticon anticon-plus btn btn-icon btn-success"></i>
+        </a>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BookId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Image)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BookName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Author)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.Price)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Category)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BookId)
+                    </td>
+                    <td>
+                        <img width="120" src="~/images/books/@Html.DisplayFor(modelItem => item.Image)" alt=" @Html.DisplayFor(modelItem => item.BookName)" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BookName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Author)
+                    </td>
+                    <td>
+                        @string.Format("{0:C0}", item.Price)
+                    </td>
+                    <td>
+                        @item.CategoryName
+                    </td>
+                    <td class="d-flex">
+                        <a asp-action="Edit" asp-area="Admin" asp-route-id="@item.BookId">
+                            <i class="anticon anticon-form btn btn-icon btn-warning mr-2"></i>
+                        </a>
+                        <a asp-action="Details" asp-area="Admin" asp-route-id="@item.BookId">
+                            <i class="anticon anticon-info-circle btn btn-icon btn-primary mr-2"></i>
+                        </a>
+                        <a class="btn btn-icon btn-danger" asp-action="Delete" asp-area="Admin" asp-route-id="@item.BookId" onclick="return confirm('Are you sure ?')">
+                            <i class="anticon anticon-delete btn btn-icon btn-danger"></i>
+                        </a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        <hr />
+        <div class="row">
+            <div class="col-sm-12 col-md-5">
+                <div class="dataTables_info">
+                    Showing
+                    <span class="text-danger">
+                        @ViewBag.CurrentPage
+                    </span>
+                    of
+                    <b>
+                        @ViewBag.TotalPages
+                    </b>
+                    pages
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-7">
+                <div class="float-right ">
+                    <ul class="pagination justify-content-center">
+                        @if (ViewBag.CurrentPage > 1)
+                        {
+                            <li class="page-item "><a class="page-link" href="/Admin/Books?page=@(ViewBag.CurrentPage - 1)">Pre</a></li>
+                        }
+
+                        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                        {
+                            @if (ViewBag.CurrentPage == i)
+                            {
+                                <li class="page-item active"><a class="page-link" href="/Admin/Books?page=@i">@i</a></li>
+
+
+                            }
+                            else
+                            {
+                                <li class="page-item"><a class="page-link" href="/Admin/Books?page=@i">@i</a></li>
+
+                            }
+                        }
+
+                        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                        {
+                            <li class="page-item "><a class="page-link" href="/Admin/Books?page=@(ViewBag.CurrentPage + 1)">Next</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

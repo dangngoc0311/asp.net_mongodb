@@ -1,0 +1,95 @@
+﻿@model Asp_MongoDB.Models.Order
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var @total = 0;
+}
+<div class="breadcumb-area bg-img-1 black-opacity ptb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcumb-wrap text-center">
+                    <h2>Checkout</h2>
+                    <ul>
+                        <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+
+                        <li><span>Checkout</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="checkout-area ptb-100">
+    <div class="container">
+        <form asp-action="Create">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="checkout-form form-style">
+                        <h3>Bill</h3>
+                        <div class="row">
+                            <div class="col-sm-6 col-12">
+                                <label asp-for="FullName" class="control-label"></label>
+                                <input asp-for="FullName" class="form-control" />
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                <label asp-for="ContactNumber" class="control-label"></label>
+                                <input asp-for="ContactNumber" class="form-control" />
+                                <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                            </div>
+                            <div class="col-12">
+                                <label asp-for="EmailAddress" class="control-label"></label>
+                                <input asp-for="EmailAddress" class="form-control" />
+                                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                            </div>
+                            <div class="col-12">
+                                <label asp-for="Address" class="control-label"></label>
+                                <input asp-for="Address" class="form-control" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                            <div class="col-12">
+                                <label asp-for="Note" class="control-label"></label>
+                                <textarea asp-for="Note" class="form-control" ></textarea>
+                                <span asp-validation-for="Note" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="order-area">
+                        <h3>Order</h3>
+                        <ul class="total-cost">
+                            @foreach (var item in ViewBag.Carts)
+                            {
+                                <li class="">
+                                    <div>
+                                        <h6 class="my-0">@item.BookName</h6>
+                                    </div>
+                                    <span class="text-muted pull-right">@string.Format("{0:C}", item.Price)</span>
+                                </li>
+                                total += item.Price * item.Quantity;
+
+                            }
+                         
+
+                            <li>
+                                TotalPrice:<span class="pull-right">
+                                    @total
+                                </span>
+                            </li>
+                        </ul>
+                        <button type="submit">Orders</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

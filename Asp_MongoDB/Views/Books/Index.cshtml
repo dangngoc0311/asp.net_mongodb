@@ -1,0 +1,155 @@
+﻿@model IEnumerable<Asp_MongoDB.Models.Book>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="breadcumb-area bg-img-1 black-opacity ptb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcumb-wrap text-center">
+                    <h2>List Books</h2>
+                    <ul>
+                        <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+
+                        <li><span>List Books</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- .breadcumb-area end -->
+<!-- product-area start -->
+<div class="product-area ptb-100 product-sidebar-area">
+    <div class="container">
+        <div class="row revarce-wrap">
+            <div class="col-lg-3 col-12">
+                <aside class="sidebar-area">
+                    <div class="widget widget_search">
+                        <h4 class="widget-title">Search</h4>
+                        <form asp-controller="Books" method="get">
+                            <input type="text" name="name" placeholder="Search..." value="">
+                            <input type="text" name="cate" hidden value="@ViewBag.Cate">
+                           
+                            <button type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+                    <div class="widget widget_categories">
+                        <h4 class="widget-title">Categories</h4>
+                        <ul>
+                            @foreach (var category in ViewData["Category"] as IEnumerable<Category>)
+                            {
+                                @if (ViewBag.Cate == category.CategoryId)
+                                {
+                                    <li class="active">
+                                        <a asp-route-cate="@category.CategoryId" asp-route-name="@ViewBag.SearchTerm" class="active">
+                                            @category.CategoryName
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="">
+                                        <a asp-route-cate="@category.CategoryId" asp-route-name="@ViewBag.SearchTerm">
+                                            @category.CategoryName
+                                        </a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </aside>
+            </div>
+            <div class="col-lg-9 col-12">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="grid">
+                        <ul class="row">
+                            @foreach (var item in Model)
+                            {
+                                <li class="col-lg-4 col-sm-6 col-12">
+                                    <div class="product-wrap">
+                                        <a asp-action="Details" asp-route-id="@item.BookId" asp-controller="Books">
+                                            <div class="product-img">
+                                                <img src="~/images/books/@Html.DisplayFor(modelItem => item.Image)" alt=" @Html.DisplayFor(modelItem => item.BookName)">
+                                            </div>
+                                        </a>
+                                        <ul class="icon">
+                                            <li>
+                                                <a asp-controller="Cart" asp-action="AddCart" asp-route-id="@item.BookId"><i class="fa fa-shopping-cart"></i></a>
+                                                <span>Add Cart</span>
+                                            </li>
+                                            <li>
+                                                <a asp-action="Details" asp-controller="Books" asp-route-id="@item.BookId"><i class="fa fa-eye"></i></a>
+                                                <span>Detail</span>
+                                            </li>
+                                        </ul>
+                                        <div class="product-content fix">
+                                            <h3>
+                                                <a asp-action="Details" asp-route-id="@item.BookId" asp-controller="Books" class="text-uppercase">
+                                                    @Html.DisplayFor(modelItem => item.BookName)
+                                                </a>
+                                            </h3>
+                                            <span class="pull-left">
+                                                <span class="new-price">
+                                                    @string.Format("{0:C0}", item.Price)
+                                                </span>
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-7">
+                                <ul class="pagination justify-content-center">
+                                    @if (ViewBag.CurrentPage > 1)
+                                    {
+                                        <li class="page-item "><a class="page-link" href="/Books?page=@(ViewBag.CurrentPage - 1)">Pre</a></li>
+                                    }
+
+                                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                                    {
+                                        @if (ViewBag.CurrentPage == i)
+                                        {
+                                            <li class="page-item active"><a class="page-link" href="/Books?page=@i">@i</a></li>
+
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item"><a class="page-link" href="/Books?page=@i">@i</a></li>
+                                        }
+
+                                    }
+
+                                    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                                    {
+                                        <li class="page-item "><a class="page-link" href="/Books?page=@(ViewBag.CurrentPage + 1)">Next</a></li>
+                                    }
+                                </ul>
+                            </div>
+                            <div class="col-sm-12 col-md-5">
+                                <div class="dataTables_info">
+                    Showing
+                    <span class="text-danger">
+                        @ViewBag.CurrentPage
+                    </span>
+                    of
+                    <b>
+                        @ViewBag.TotalPages
+                    </b>
+                    pages
+                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
